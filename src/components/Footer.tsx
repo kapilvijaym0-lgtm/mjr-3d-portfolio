@@ -12,11 +12,18 @@ const Footer = () => {
   ];
 
   const footerLinks = [
-    { title: "Services", href: "#services" },
+    { title: "Services", href: "#about" },
     { title: "Projects", href: "#projects" },
     { title: "About", href: "#about" },
     { title: "Contact", href: "#contact" }
   ];
+
+  const scrollToSection = (href: string) => {
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <footer className="bg-primary text-primary-foreground py-16">
@@ -58,13 +65,13 @@ const Footer = () => {
             <h4 className="font-display text-xl font-semibold mb-4">Quick Links</h4>
             <div className="space-y-3">
               {footerLinks.map((link) => (
-                <a
+                <button
                   key={link.title}
-                  href={link.href}
-                  className="block text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                  onClick={() => scrollToSection(link.href)}
+                  className="block text-left text-primary-foreground/80 hover:text-primary-foreground transition-colors"
                 >
                   {link.title}
-                </a>
+                </button>
               ))}
             </div>
           </motion.div>
