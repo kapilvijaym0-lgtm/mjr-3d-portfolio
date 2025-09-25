@@ -2,24 +2,15 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, MapPin, Calendar } from "lucide-react";
+import { ArrowRight, MapPin, Calendar, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+import Navigation from "@/components/Navigation";
+import Footer from "@/components/Footer";
 import projectBedroom from "@/assets/project-bedroom.jpg";
 import projectKitchen from "@/assets/project-kitchen.jpg";
 import heroInterior from "@/assets/hero-interior.jpg";
 
-interface Project {
-  id: number;
-  title: string;
-  location: string;
-  year: string;
-  category: string;
-  description: string;
-  image: string;
-  tags: string[];
-}
-
-const projects: Project[] = [
+const projects = [
   {
     id: 1,
     title: "Modern Luxury Living",
@@ -52,12 +43,12 @@ const projects: Project[] = [
   }
 ];
 
-const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
+const ProjectCard = ({ project, index }: { project: any; index: number }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.2 }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
       viewport={{ once: true }}
     >
       <Card className="group overflow-hidden shadow-card hover:shadow-elegant transition-all duration-500 border-0 gradient-card">
@@ -116,53 +107,42 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
   );
 };
 
-const ProjectShowcase = () => {
+const Projects = () => {
   return (
-    <section id="projects" className="py-20 bg-gradient-to-b from-background to-soft-gray">
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">
-            Featured <span className="text-gradient">Projects</span>
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Discover our portfolio of sophisticated interior designs, where luxury meets functionality 
-            and every space tells a unique story.
-          </p>
-        </motion.div>
+    <div className="min-h-screen">
+      <Navigation />
+      <section className="py-20 bg-gradient-to-b from-background to-soft-gray">
+        <div className="container mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="mb-16"
+          >
+            <Link to="/" className="inline-flex items-center text-muted-foreground hover:text-accent transition-colors mb-8">
+              <ArrowLeft size={20} className="mr-2" />
+              Back to Home
+            </Link>
+            
+            <h1 className="font-display text-5xl md:text-6xl font-bold mb-6">
+              All <span className="text-gradient">Projects</span>
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
+              Explore our complete portfolio of sophisticated interior designs, where luxury meets functionality 
+              and every space tells a unique story.
+            </p>
+          </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map((project, index) => (
+              <ProjectCard key={project.id} project={project} index={index} />
+            ))}
+          </div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
-          <Link to="/projects">
-            <Button 
-              size="lg" 
-              variant="outline"
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8"
-            >
-              View All Projects
-              <ArrowRight size={18} className="ml-2" />
-            </Button>
-          </Link>
-        </motion.div>
-      </div>
-    </section>
+      </section>
+      <Footer />
+    </div>
   );
 };
 
-export default ProjectShowcase;
+export default Projects;
