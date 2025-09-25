@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Float, Text3D, Center } from "@react-three/drei";
+import { OrbitControls, Float } from "@react-three/drei";
 import { motion } from "framer-motion";
 import * as THREE from "three";
 import { Button } from "@/components/ui/button";
@@ -30,8 +30,8 @@ const FloatingGeometry = ({ position, geometry, color }: { position: [number, nu
 const Scene3D = () => {
   return (
     <>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} />
+      <ambientLight intensity={0.6} />
+      <pointLight position={[10, 10, 10]} intensity={0.8} />
       <directionalLight position={[0, 10, 5]} intensity={1} />
       
       {/* Floating geometric elements */}
@@ -50,29 +50,18 @@ const Scene3D = () => {
         geometry={new THREE.OctahedronGeometry(0.4)} 
         color="#F5E6D3" 
       />
+      <FloatingGeometry 
+        position={[1, 0.5, 1]} 
+        geometry={new THREE.TetrahedronGeometry(0.3)} 
+        color="#E6D7C3" 
+      />
+      <FloatingGeometry 
+        position={[-1.5, -0.5, 1.5]} 
+        geometry={new THREE.DodecahedronGeometry(0.25)} 
+        color="#C9A96E" 
+      />
       
-      {/* 3D Text */}
-      <Center>
-        <Float speed={2} rotationIntensity={0.1} floatIntensity={0.1}>
-          <Text3D
-            font="/fonts/Playfair_Display_Regular.json"
-            size={0.5}
-            height={0.1}
-            curveSegments={12}
-            bevelEnabled
-            bevelThickness={0.02}
-            bevelSize={0.02}
-            bevelOffset={0}
-            bevelSegments={5}
-            position={[0, 0, 0]}
-          >
-            Interior Design
-            <meshStandardMaterial color="#2D3748" />
-          </Text3D>
-        </Float>
-      </Center>
-      
-      <OrbitControls enableZoom={false} enablePan={false} />
+      <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
     </>
   );
 };
