@@ -57,6 +57,26 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Custom colors for MJR design
+        "warm-white": "hsl(var(--warm-white))",
+        "soft-gray": "hsl(var(--soft-gray))",
+        "charcoal": "hsl(var(--charcoal))",
+        "cream": "hsl(var(--cream))",
+        "gold": "hsl(var(--gold))",
+      },
+      fontFamily: {
+        display: ['var(--font-display)', 'Playfair Display', 'serif'],
+        body: ['var(--font-body)', 'Inter', 'sans-serif'],
+      },
+      backgroundImage: {
+        'gradient-hero': 'var(--gradient-hero)',
+        'gradient-card': 'var(--gradient-card)', 
+        'gradient-accent': 'var(--gradient-accent)',
+      },
+      boxShadow: {
+        'elegant': 'var(--shadow-elegant)',
+        'card': 'var(--shadow-card)',
+        'glow': 'var(--shadow-glow)',
       },
       borderRadius: {
         lg: "var(--radius)",
