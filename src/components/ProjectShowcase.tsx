@@ -1,9 +1,13 @@
+import { useRef } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Float, Environment } from "@react-three/drei";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, MapPin, Calendar } from "lucide-react";
+import { ArrowRight, MapPin, Calendar, Play } from "lucide-react";
 import { Link } from "react-router-dom";
+import * as THREE from "three";
 import projectBedroom from "@/assets/project-bedroom.jpg";
 import projectKitchen from "@/assets/project-kitchen.jpg";
 import heroInterior from "@/assets/hero-interior.jpg";
@@ -17,7 +21,61 @@ interface Project {
   description: string;
   image: string;
   tags: string[];
+  has3DWalkthrough?: boolean;
 }
+
+// 3D Model component for project cards
+const Project3DPreview = ({ projectId }: { projectId: number }) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.3;
+      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.8) * 0.1;
+    }
+  });
+
+  const getGeometry = () => {
+    switch (projectId) {
+      case 1:
+        return <boxGeometry args={[1, 0.6, 0.8]} />;
+      case 2:
+        return <cylinderGeometry args={[0.5, 0.5, 0.8]} />;
+      case 3:
+        return <octahedronGeometry args={[0.5]} />;
+      default:
+        return <boxGeometry args={[1, 0.6, 0.8]} />;
+    }
+  };
+
+  const getColor = () => {
+    switch (projectId) {
+      case 1:
+        return "#D4AF37";
+      case 2:
+        return "#8B7355";
+      case 3:
+        return "#E6D7C3";
+      default:
+        return "#D4AF37";
+    }
+  };
+
+  return (
+    <Float speed={2} rotationIntensity={0.3} floatIntensity={0.5}>
+      <mesh ref={meshRef}>
+        {getGeometry()}
+        <meshStandardMaterial 
+          color={getColor()} 
+          metalness={0.6} 
+          roughness={0.3}
+          transparent
+          opacity={0.8}
+        />
+      </mesh>
+    </Float>
+  );
+};
 
 const projects: Project[] = [
   {
@@ -28,7 +86,8 @@ const projects: Project[] = [
     category: "Residential",
     description: "A sophisticated penthouse transformation featuring custom furniture and curated art pieces.",
     image: heroInterior,
-    tags: ["Luxury", "Modern", "Custom Furniture"]
+    tags: ["Luxury", "Modern", "Custom Furniture"],
+    has3DWalkthrough: true
   },
   {
     id: 2,
@@ -38,7 +97,8 @@ const projects: Project[] = [
     category: "Residential",
     description: "Creating a peaceful sanctuary with neutral tones and premium materials.",
     image: projectBedroom,
-    tags: ["Minimalist", "Luxury", "Residential"]
+    tags: ["Minimalist", "Luxury", "Residential"],
+    has3DWalkthrough: true
   },
   {
     id: 3,
@@ -48,7 +108,8 @@ const projects: Project[] = [
     category: "Kitchen Design",
     description: "A chef's dream kitchen combining functionality with timeless elegance.",
     image: projectKitchen,
-    tags: ["Kitchen", "Modern", "Marble"]
+    tags: ["Kitchen", "Modern", "Marble"],
+    has3DWalkthrough: true
   }
 ];
 
@@ -65,12 +126,27 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
           <img
             src={project.image}
             alt={project.title}
-            className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <Badge className="absolute top-4 left-4 bg-white text-charcoal">
             {project.category}
           </Badge>
+          {project.has3DWalkthrough && (
+            <div className="absolute top-4 right-4 bg-accent text-white p-2 rounded-full">
+              <Play size={14} />
+            </div>
+          )}
+        </div>
+        
+        {/* 3D Preview Section */}
+        <div className="h-32 bg-gradient-subtle">
+          <Canvas camera={{ position: [0, 0, 2], fov: 50 }}>
+            <Environment preset="studio" />
+            <ambientLight intensity={0.6} />
+            <directionalLight position={[2, 2, 2]} intensity={0.8} />
+            <Project3DPreview projectId={project.id} />
+          </Canvas>
         </div>
         
         <CardContent className="p-6">

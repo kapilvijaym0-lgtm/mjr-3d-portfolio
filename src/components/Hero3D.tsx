@@ -1,72 +1,105 @@
-import { useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Float } from "@react-three/drei";
+import { useRef, useState, useEffect } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { OrbitControls, Float, Sphere, Box, Environment } from "@react-three/drei";
 import { motion } from "framer-motion";
 import * as THREE from "three";
 import { Button } from "@/components/ui/button";
 import heroInterior from "@/assets/hero-interior.jpg";
 
-// Floating geometric shapes for visual interest
-const FloatingGeometry = ({ position, geometry, color }: { position: [number, number, number], geometry: THREE.BufferGeometry, color: string }) => {
-  const meshRef = useRef<THREE.Mesh>(null);
+// Interactive 3D scene that responds to mouse movement
+const InteractiveScene = ({ mousePosition }: { mousePosition: { x: number; y: number } }) => {
+  const groupRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x += 0.01;
-      meshRef.current.rotation.y += 0.005;
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
+    if (groupRef.current) {
+      // Rotate the entire scene based on mouse position
+      groupRef.current.rotation.y = THREE.MathUtils.lerp(
+        groupRef.current.rotation.y,
+        mousePosition.x * 0.3,
+        0.05
+      );
+      groupRef.current.rotation.x = THREE.MathUtils.lerp(
+        groupRef.current.rotation.x,
+        mousePosition.y * 0.1,
+        0.05
+      );
     }
   });
 
   return (
-    <Float speed={1.5} rotationIntensity={1} floatIntensity={2}>
-      <mesh ref={meshRef} position={position} geometry={geometry}>
-        <meshStandardMaterial color={color} transparent opacity={0.7} />
-      </mesh>
-    </Float>
+    <group ref={groupRef}>
+      {/* Floating interior design elements */}
+      <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
+        <Box position={[-3, 1, -1]} args={[0.8, 0.1, 1.2]}>
+          <meshStandardMaterial color="#8B7355" />
+        </Box>
+      </Float>
+      
+      <Float speed={1.5} rotationIntensity={0.8} floatIntensity={1.5}>
+        <Sphere position={[2, -1, 0]} args={[0.4]}>
+          <meshStandardMaterial color="#D4AF37" metalness={0.8} roughness={0.2} />
+        </Sphere>
+      </Float>
+      
+      <Float speed={1.8} rotationIntensity={0.6} floatIntensity={1.2}>
+        <Box position={[0, 2, -2]} args={[0.6, 0.6, 0.1]}>
+          <meshStandardMaterial color="#F5E6D3" />
+        </Box>
+      </Float>
+      
+      <Float speed={2.2} rotationIntensity={0.4} floatIntensity={0.8}>
+        <mesh position={[-1, -0.5, 1]}>
+          <cylinderGeometry args={[0.3, 0.3, 1.2, 6]} />
+          <meshStandardMaterial color="#E6D7C3" />
+        </mesh>
+      </Float>
+      
+      <Float speed={1.6} rotationIntensity={0.7} floatIntensity={1.8}>
+        <mesh position={[1.5, 0.8, 0.5]}>
+          <tetrahedronGeometry args={[0.5]} />
+          <meshStandardMaterial color="#C9A96E" metalness={0.6} roughness={0.3} />
+        </mesh>
+      </Float>
+    </group>
   );
 };
 
-const Scene3D = () => {
+const Scene3D = ({ mousePosition }: { mousePosition: { x: number; y: number } }) => {
   return (
     <>
-      <ambientLight intensity={0.6} />
-      <pointLight position={[10, 10, 10]} intensity={0.8} />
-      <directionalLight position={[0, 10, 5]} intensity={1} />
+      <Environment preset="studio" />
+      <ambientLight intensity={0.4} />
+      <pointLight position={[10, 10, 10]} intensity={1.2} color="#D4AF37" />
+      <pointLight position={[-10, -10, -10]} intensity={0.8} color="#8B7355" />
+      <directionalLight position={[0, 10, 5]} intensity={1.5} />
       
-      {/* Floating geometric elements */}
-      <FloatingGeometry 
-        position={[-2, 1, 0]} 
-        geometry={new THREE.BoxGeometry(0.5, 0.5, 0.5)} 
-        color="#D4AF37" 
-      />
-      <FloatingGeometry 
-        position={[2, -1, -1]} 
-        geometry={new THREE.ConeGeometry(0.3, 0.8, 6)} 
-        color="#8B7355" 
-      />
-      <FloatingGeometry 
-        position={[0, 2, -2]} 
-        geometry={new THREE.OctahedronGeometry(0.4)} 
-        color="#F5E6D3" 
-      />
-      <FloatingGeometry 
-        position={[1, 0.5, 1]} 
-        geometry={new THREE.TetrahedronGeometry(0.3)} 
-        color="#E6D7C3" 
-      />
-      <FloatingGeometry 
-        position={[-1.5, -0.5, 1.5]} 
-        geometry={new THREE.DodecahedronGeometry(0.25)} 
-        color="#C9A96E" 
-      />
+      <InteractiveScene mousePosition={mousePosition} />
       
-      <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
+      {/* Subtle auto-rotation disabled to focus on mouse interaction */}
+      <OrbitControls 
+        enableZoom={false} 
+        enablePan={false} 
+        enableRotate={false}
+        autoRotate={false}
+      />
     </>
   );
 };
 
 const Hero3D = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  useEffect(() => {
+    const handleMouseMove = (event: MouseEvent) => {
+      const x = (event.clientX / window.innerWidth) * 2 - 1;
+      const y = -(event.clientY / window.innerHeight) * 2 + 1;
+      setMousePosition({ x, y });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   const scrollToProjects = () => {
     const element = document.querySelector("#projects");
     if (element) {
@@ -87,9 +120,9 @@ const Hero3D = () => {
       />
       
       {/* 3D Canvas */}
-      <div className="absolute inset-0 z-10">
+      <div className="absolute inset-0 z-10 cursor-none">
         <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-          <Scene3D />
+          <Scene3D mousePosition={mousePosition} />
         </Canvas>
       </div>
       
