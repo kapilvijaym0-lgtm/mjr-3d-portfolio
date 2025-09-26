@@ -52,12 +52,12 @@ const About = () => {
             viewport={{ once: true }}
           >
             <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">
-              About <span className="text-gradient">MJR</span>
+              About <span className="text-gradient">Royal Interior Designer</span>
             </h2>
             
             <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
-              With over 15 years of experience in luxury interior design, MJR has established 
-              herself as a visionary in creating sophisticated, personalized spaces that reflect 
+              With over 15 years of experience in luxury interior design, Royal Interior Designer 
+              has established itself as a premier studio creating sophisticated, personalized spaces that reflect 
               the unique lifestyle and personality of each client.
             </p>
             
@@ -127,7 +127,7 @@ const About = () => {
             <div className="relative overflow-hidden rounded-2xl shadow-elegant">
               <img
                 src={mjrPortrait}
-                alt="MJR Interior Designer"
+                alt="Royal Interior Designer Team"
                 className="w-full h-[600px] object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
@@ -159,7 +159,7 @@ const About = () => {
           <Card className="bg-primary text-primary-foreground shadow-elegant border-0">
             <CardContent className="p-8 text-center">
               <blockquote className="font-display text-xl md:text-2xl font-medium mb-4">
-                "MJR transformed our home into a masterpiece. Her attention to detail and 
+                "Royal Interior Designer transformed our home into a masterpiece. Their attention to detail and 
                 understanding of our vision was extraordinary. Every room feels like a work of art."
               </blockquote>
               <cite className="text-primary-foreground/80">

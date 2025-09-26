@@ -57,7 +57,7 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Custom colors for MJR design
+        // Custom colors for Royal Interior Designer
         "warm-white": "hsl(var(--warm-white))",
         "soft-gray": "hsl(var(--soft-gray))",
         "charcoal": "hsl(var(--charcoal))",

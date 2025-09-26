@@ -23,8 +23,8 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email",
-      value: "hello@mjrinteriors.com",
-      link: "mailto:hello@mjrinteriors.com"
+      value: "hello@royalinteriordesigner.com",
+      link: "mailto:hello@royalinteriordesigner.com"
     },
     {
       icon: Phone,
@@ -35,13 +35,13 @@ const Contact = () => {
     {
       icon: MapPin,
       title: "Studio",
-      value: "123 Design District, NYC",
+      value: "456 Royal Design Plaza, NYC",
       link: "#"
     },
     {
       icon: Clock,
       title: "Hours",
-      value: "Mon-Fri 9AM-6PM",
+      value: "Mon-Fri 9AM-6PM EST",
       link: "#"
     }
   ];

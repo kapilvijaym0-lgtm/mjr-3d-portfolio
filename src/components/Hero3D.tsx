@@ -135,8 +135,8 @@ const Hero3D = () => {
             transition={{ duration: 1, delay: 0.5 }}
             className="font-display text-5xl md:text-7xl font-bold mb-6 leading-tight"
           >
-            Sophisticated Spaces,<br />
-            <span className="text-gradient">Timeless Design</span>
+            Royal Interiors,<br />
+            <span className="text-gradient">Timeless Elegance</span>
           </motion.h1>
           
           <motion.p
@@ -145,7 +145,7 @@ const Hero3D = () => {
             transition={{ duration: 0.8, delay: 0.8 }}
             className="text-xl md:text-2xl mb-8 font-light opacity-90 max-w-2xl mx-auto"
           >
-            Creating luxurious, personalized interiors that reflect your unique style and enhance your daily life.
+            Royal Interior Designer creates luxurious, personalized spaces that reflect your unique style and enhance your daily life through sophisticated design solutions.
           </motion.p>
           
           <motion.div
